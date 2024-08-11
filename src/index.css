@@ -1,0 +1,39 @@
+span {
+  color: white;
+  padding-left: 0.4rem;
+}
+
+.card-img-custom {
+  height: 200px;
+  object-fit: cover;
+}
+
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.navbar {
+  background-color: #007bff;
+}
+
+body.dark-mode .navbar {
+  background-color: #343a40;
+}
+
+.card {
+  background-color: #f8f9fa;
+}
+
+body.dark-mode .card {
+  background-color: #333333;
+}
