@@ -24,8 +24,8 @@ export const NavBar = () => {
           <Nav.Link as={NavLink} to="/category/Higiene">
             Higiene
           </Nav.Link>
-          <Nav.Link as={NavLink} to="/category/Snacks">
-            Snacks
+          <Nav.Link as={NavLink} to="/category/Accesorios">
+            Accesorios
           </Nav.Link>
           <Nav.Link as={NavLink} to="/category/Alimentos">
             Alimentos

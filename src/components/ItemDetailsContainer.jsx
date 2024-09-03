@@ -1,34 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-
-import Container from "react-bootstrap/Container";
-
-import data from "../data/productos.json";
+import { ItemDetails } from "./ItemDetails";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { ItemsContext } from "../contexts/ItemsContext";
 
 export const ItemDetailsContainer = () => {
-  const [item, setItem] = useState([]);
+  const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const { addItem } = useContext(ItemsContext);
 
   const { id } = useParams();
 
   useEffect(() => {
-    new Promise((resolve) => setTimeout(() => resolve(data), 2000))
-      .then((response) => {
-        const finded = response.find((i) => i.id === id);
-        setItem(finded);
+    const db = getFirestore();
+
+    const refDoc = doc(db, "items", id);
+
+    getDoc(refDoc)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          setItem({
+            ...snapshot.data(),
+            id: snapshot.id,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error", error);
       })
       .finally(() => setLoading(false));
   }, [id]);
 
+  const onAdd = (quantity) => {
+    addItem({ ...item, quantity });
+  };
+
   if (loading) return "Cargando";
 
-  return (
-    <Container className="mt-4">
-      <h1>{item.tittle}</h1>
-      <h2>{item.category}</h2>
-      <h3>{item.description}</h3>
-      <img src={item.pictureUrl} alt="" height={200} />
-      <b>${item.price}</b>
-    </Container>
+  return item ? (
+    <ItemDetails item={item} onAdd={onAdd} />
+  ) : (
+    <div>Item not found</div>
   );
 };
